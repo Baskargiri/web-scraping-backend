@@ -28,14 +28,14 @@ app.use(cors());
     // }
     // const { data } = axios.get(url);
     // console.log(data)
-        // const $ = cheerio.load(data);
-        // const dt = $('._2kHMtA')
-        // dt.each((el)=>{
-        //     list.title = $('._4rR01T').text();
-        //     arr.push(list)
-        // })
+    //     const $ = cheerio.load(data);
+    //     const dt = $('._2kHMtA')
+    //     dt.each((el)=>{
+    //         list.title = $('._4rR01T').text();
+    //         arr.push(list)
+    //     })
 
-        // console.log(arr)
+    //     console.log(arr)
 
 
 
@@ -68,8 +68,8 @@ app.use(cors());
    
 
 app.get("/",async function (request, response) {
-//    try{
-    // const mobileurl = "https://www.flipkart.com/apple-iphone-14-pro-deep-purple-128-gb/p/itm75f73f63239fa?pid=MOBGHWFHYGAZRWFT&lid=LSTMOBGHWFHYGAZRWFTJTZIDA&marketplace=FLIPKART&q=iphone+14+pro&store=tyy%2F4io&srno=s_1_1&otracker=AS_QueryStore_OrganicAutoSuggest_1_2_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_1_2_na_na_na&fm=organic&iid=33fa5858-b0dc-488e-8790-d4e6e86d4f7f.MOBGHWFHYGAZRWFT.SEARCH&ppt=clp&ppn=big-savings-days-store&ssid=ui7imfbxhs0000001678795421156&qH=73a41d19c3188cc2";
+   try{
+
 
     const mobileurl ="https://www.flipkart.com/search?q=mobiles&sid=tyy%2C4io&as=on&as-show=on&otracker=AS_QueryStore_OrganicAutoSuggest_2_6_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_2_6_na_na_na&as-pos=2&as-type=HISTORY&suggestionId=mobiles%7CMobiles&requestId=0b463bac-b880-4904-9a43-e8bf22856336"
     const mobileList = [];
@@ -97,25 +97,25 @@ app.get("/",async function (request, response) {
     const mobileRating = $("._3LWZlK");
     const mobileOfferPrice = $("._30jeq3 _1_WHN1");
     const mobilePrice = $("._3I9_wc _27UcVY");
-    // console.log($(mobilePrice).text())
+    console.log($(mobilePrice).text())
 
     
    
-//     dbs.image = mobileimage.eq(0).attr('src');
-//     dbs.title = mobileTitle.text();
-//     dbs.rating = mobileRating.text();
-//     dbs.price = mobilePrice.text();
-//     dbs.offer_price = mobileOfferPrice.text();
+    dbs.image = mobileimage.eq(0).attr('src');
+    dbs.title = mobileTitle.text();
+    dbs.rating = mobileRating.text();
+    dbs.price = mobilePrice.text();
+    dbs.offer_price = mobileOfferPrice.text();
 
-//     mobileList.push(dbs)
-//     console.log(mobileList);
+    mobileList.push(dbs)
+    console.log(mobileList);
 
-//     const result = await client.db("webcode").collection("data").insertOne(mobileList);
-//     response.send(result)
+    const result = await client.db("webcode").collection("data").insertOne(mobileList);
+    response.send(result)
 
-//    }catch(err){
-//     console.log(err)
-//    }
+   }catch(err){
+    console.log(err)
+   }
  
 });
 
