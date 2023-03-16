@@ -8,10 +8,11 @@ import cors from "cors";
 
 
 
-app.use(cors());
+
 const app = express();
 //middle ware convert body to json
 app.use(express.json())
+app.use(cors());
 // app.use(express.urlencoded())
 
 const PORT = process.env.PORT;
