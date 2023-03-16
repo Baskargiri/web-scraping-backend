@@ -8,7 +8,7 @@ import cors from "cors";
 
 
 
-
+app.use(cors());
 const app = express();
 //middle ware convert body to json
 app.use(express.json())
@@ -28,7 +28,7 @@ console.log("Mongo is connected !!!  ");
  const products = [];
  
 
-app.use(cors());
+
 const url = 'https://www.flipkart.com/search?q=iphone&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off';
 function cl(){
     axios.get(url)
