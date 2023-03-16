@@ -14,7 +14,7 @@ const PORT = 4000;
 
 
 // const MONGO_URL = "mongodb://127.0.0.1";
-
+const MONGO_URL = "mongodb+srv://boss:baskar9798@cluster0.mcz101i.mongodb.net"
 
 
 const client = new MongoClient(MONGO_URL); // dial
@@ -46,7 +46,7 @@ function cl(){
     //  const dt=JSON.stringify(products);
     
     //   console.log(dt);
-      console.log(products)
+    
     })
   
 }
@@ -57,11 +57,23 @@ app.get("/web",async function (request, response) {
  
 });
 
-app.post("/web",express.json(),async function (request, response) {
-    cl();
-    response.send(products)
+app.put("/webpost",async (req, res)=> {
+
+    try{
+        const data =JSON.parse(req.headers.data) ;
+        console.log( data);
+        console.log(req.body)
+        
+        // const result = await client.db("web").collection("datas").insertMany({data:data})
+        // response.send(result)
+        res.end()
+    }catch(err){
+        console.log(err)
+    }
+    
  
 });
+
 
 
 
