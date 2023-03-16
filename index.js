@@ -1,4 +1,5 @@
-// const express = require("express");
+import * as dotenv from 'dotenv'
+dotenv.config()
 import express from "express";
 import { MongoClient } from "mongodb";
 import axios from "axios";
@@ -9,12 +10,15 @@ import cors from "cors";
 
 
 const app = express();
+//middle ware convert body to json
+app.use(express.json())
+// app.use(express.urlencoded())
 
 const PORT = 4000;
 
 
 // const MONGO_URL = "mongodb://127.0.0.1";
-const MONGO_URL = "mongodb+srv://boss:baskar9798@cluster0.mcz101i.mongodb.net"
+const MONGO_URL = process.env.MONGO_URL;
 
 
 const client = new MongoClient(MONGO_URL); // dial
@@ -22,7 +26,7 @@ const client = new MongoClient(MONGO_URL); // dial
 await client.connect(); // call
 console.log("Mongo is connected !!!  ");
  const products = [];
- const raw=[];
+ 
 
 app.use(cors());
 const url = 'https://www.flipkart.com/search?q=iphone&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off';
@@ -53,20 +57,22 @@ function cl(){
    
 app.get("/web",async function (request, response) {
     cl();
-    response.send(products)
+    const result = await client.db("web").collection("datas").find({}).toArray()
+    response.send(result)
  
 });
 
-app.put("/webpost",async (req, res)=> {
+
+app.post("/webpost",async (req, res)=> {
 
     try{
-        const data =JSON.parse(req.headers.data) ;
-        console.log( data);
-        console.log(req.body)
-        
-        // const result = await client.db("web").collection("datas").insertMany({data:data})
-        // response.send(result)
-        res.end()
+        const data =req.body;
+        // console.log( data);
+    //    const result = await client.db("web").collection("datas").insertMany({data:data[0]})
+    const result = await client.db("web").collection("datas").insertMany(data)
+        res.send(result)
+        // res.end()
+
     }catch(err){
         console.log(err)
     }
