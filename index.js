@@ -13,111 +13,57 @@ const app = express();
 const PORT = 4000;
 
 
-const MONGO_URL = "mongodb://127.0.0.1";
+// const MONGO_URL = "mongodb://127.0.0.1";
+const MONGO_URL = "mongodb+srv://boss:baskar9798@cluster0.mcz101i.mongodb.net"
+
+
 const client = new MongoClient(MONGO_URL); // dial
 // Top level await
 await client.connect(); // call
 console.log("Mongo is connected !!!  ");
+ const products = [];
+ const raw=[];
 
 app.use(cors());
-
-    // const url = "https://www.flipkart.com/search?q=mobiles&sid=tyy%2C4io&as=on&as-show=on&otracker=AS_QueryStore_OrganicAutoSuggest_2_6_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_2_6_na_na_na&as-pos=2&as-type=HISTORY&suggestionId=mobiles%7CMobiles&requestId=0b463bac-b880-4904-9a43-e8bf22856336"
-    // const arr =[];
-    // const list = {
-    //     title:""
-    // }
-    // const { data } = axios.get(url);
-    // console.log(data)
-    //     const $ = cheerio.load(data);
-    //     const dt = $('._2kHMtA')
-    //     dt.each((el)=>{
-    //         list.title = $('._4rR01T').text();
-    //         arr.push(list)
-    //     })
-
-    //     console.log(arr)
-
-
-
-    // mobileimage.each((idx, el) => {
-    //   category.image = $(el).attr("src");
-
-    //   mobileList.push(category);
-    // });
-
-    // mobileTitle.each((idx, el) => {
-    //   category.title = $(el).text();
-    //   mobileList.push(category);
-    // });
-
-    // // mobileRating.each((idx,el)=>{
-    // //  category.rating = $(el);
-    // //  mobileList.push(category);
-    // // })
-
-    // mobilePrice.each((idx, el) => {
-    //   category.price = $(el).text();
-    //   mobileList.push(category);
-    // })
-
-    // mobileOfferPrice.each((idx, el) => {
-    //   category.offerprice = $(el).text();
-    //   mobileList.push(category);
-    // })
-
-   
-
-app.get("/",async function (request, response) {
-   try{
-
-
-    const mobileurl ="https://www.flipkart.com/search?q=mobiles&sid=tyy%2C4io&as=on&as-show=on&otracker=AS_QueryStore_OrganicAutoSuggest_2_6_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_2_6_na_na_na&as-pos=2&as-type=HISTORY&suggestionId=mobiles%7CMobiles&requestId=0b463bac-b880-4904-9a43-e8bf22856336"
-    const mobileList = [];
-
+const url = 'https://www.flipkart.com/search?q=iphone&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off';
+function cl(){
+    axios.get(url)
+    .then(response => {
+      const html = response.data;
+      const $ = cheerio.load(html);
+  
+     
+  
+      $('._2kHMtA').each((i, element) => {
+        const img = $(element).find('._396cs4').attr('src');
+        const title = $(element).find('._4rR01T').text();
+        const priceStr = $(element).find('._30jeq3._1_WHN1').text();
+        const price = parseInt(priceStr.replace(/\D/g, ''));
+        const rating = $(element).find('._3LWZlK').text();
+  
+        products.push({ img, title, price, rating });
+      });
+    //  const dt=JSON.stringify(products);
     
-
-    const { data } = await axios.get(mobileurl);
-    const $ = cheerio.load(data);
-
-   
-
-    const dbs = { image: "", title: "",rating:"",price:"",offer_price:""};
-
-    const ds = $('._2kHMtA');
-    ds.map((el)=>{
-        dbs.title = $(el).find('._4rR01T').text();
-        mobileList.push(dbs)
+    //   console.log(dt);
+      console.log(products)
     })
- 
-    console.log(ds[0])
-
-
-    const mobileimage = $('img._396cs4._2amPTt._3qGmMb');
-    const mobileTitle = $(".B_NuCI");
-    const mobileRating = $("._3LWZlK");
-    const mobileOfferPrice = $("._30jeq3 _1_WHN1");
-    const mobilePrice = $("._3I9_wc _27UcVY");
-    console.log($(mobilePrice).text())
-
-    
+  
+}
    
-    dbs.image = mobileimage.eq(0).attr('src');
-    dbs.title = mobileTitle.text();
-    dbs.rating = mobileRating.text();
-    dbs.price = mobilePrice.text();
-    dbs.offer_price = mobileOfferPrice.text();
-
-    mobileList.push(dbs)
-    console.log(mobileList);
-
-    const result = await client.db("webcode").collection("data").insertOne(mobileList);
-    response.send(result)
-
-   }catch(err){
-    console.log(err)
-   }
+app.get("/web",async function (request, response) {
+    cl();
+    response.send(products)
  
 });
+
+app.post("/web",express.json(),async function (request, response) {
+    cl();
+    response.send(products)
+ 
+});
+
+
 
 
 app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
