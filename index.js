@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json())
 // app.use(express.urlencoded())
 
-const PORT = 4000;
+const PORT = process.env.PORT;
 
 
 // const MONGO_URL = "mongodb://127.0.0.1";
