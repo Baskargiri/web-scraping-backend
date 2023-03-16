@@ -14,7 +14,7 @@ const PORT = 4000;
 
 
 // const MONGO_URL = "mongodb://127.0.0.1";
-const MONGO_URL = "mongodb+srv://boss:baskar9798@cluster0.mcz101i.mongodb.net"
+
 
 
 const client = new MongoClient(MONGO_URL); // dial
